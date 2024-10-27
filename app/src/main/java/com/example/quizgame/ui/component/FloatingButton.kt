@@ -22,7 +22,7 @@ fun FloatingButton(modifier: Modifier = Modifier) {
         containerColor = colorResource(id = R.color.primary_purple),
         contentColor = colorResource(id = R.color.white),
         modifier = Modifier
-            //.offset(y = 60.dp)
+            .offset(y = 60.dp) //to place this icon slightly above other bottom bar icons
             .size(80.dp)
             .border(
                 width = 4.dp,
