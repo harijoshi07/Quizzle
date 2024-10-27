@@ -9,11 +9,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.quizgame.R
 import com.example.quizgame.ui.component.BottomBar
 import com.example.quizgame.ui.component.FloatingButton
+import com.example.quizgame.ui.component.TopBar
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
 
     Scaffold(
+        topBar = {TopBar(title = "home") },
         floatingActionButton = { FloatingButton()},
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = { BottomBar()},
