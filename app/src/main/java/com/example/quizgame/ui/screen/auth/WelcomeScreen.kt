@@ -1,4 +1,4 @@
-package com.example.quizgame.ui.screen
+package com.example.quizgame.ui.screen.auth
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
