@@ -1,5 +1,6 @@
 package com.example.quizgame.presentation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import com.example.quizgame.R
 import com.example.quizgame.ui.component.BottomBar
 import com.example.quizgame.ui.component.FloatingButton
 import com.example.quizgame.ui.component.TopBar
+import com.example.quizgame.ui.screen.category.CategoryScreen
 import com.example.quizgame.ui.screen.home.HomeScreen
 
 @Composable
@@ -22,7 +24,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
         bottomBar = { BottomBar()},
         containerColor = colorResource(id = R.color.primary_purple)
     ) {
-        HomeScreen(it)
+        //HomeScreen(it)
+        CategoryScreen(modifier = Modifier.padding(it))
     }
 
 }
