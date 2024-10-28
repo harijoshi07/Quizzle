@@ -1,4 +1,4 @@
-package com.example.quizgame.ui.screen
+package com.example.quizgame.ui.screen.auth
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
