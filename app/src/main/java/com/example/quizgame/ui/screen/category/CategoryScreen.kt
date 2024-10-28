@@ -37,7 +37,7 @@ fun CategoryScreen(modifier: Modifier) {
     Surface(
         modifier = modifier,
         //color = colorResource(id = R.color.white_background),
-        shape = RoundedCornerShape(topStartPercent = 16, topEndPercent = 16)
+        shape = RoundedCornerShape(topStartPercent = 8, topEndPercent = 8)
     ) {
         LazyVerticalGrid(
             modifier = Modifier
