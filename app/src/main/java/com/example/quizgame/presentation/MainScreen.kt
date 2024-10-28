@@ -13,19 +13,21 @@ import com.example.quizgame.ui.component.FloatingButton
 import com.example.quizgame.ui.component.TopBar
 import com.example.quizgame.ui.screen.category.CategoryScreen
 import com.example.quizgame.ui.screen.home.HomeScreen
+import com.example.quizgame.ui.screen.shared.ListScreen
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
 
     Scaffold(
-        topBar = {TopBar(title = "home") },
-        floatingActionButton = { FloatingButton()},
+        topBar = { TopBar(title = "home") },
+        floatingActionButton = { FloatingButton() },
         floatingActionButtonPosition = FabPosition.Center,
-        bottomBar = { BottomBar()},
+        bottomBar = { BottomBar() },
         containerColor = colorResource(id = R.color.primary_purple)
     ) {
         //HomeScreen(it)
-        CategoryScreen(modifier = Modifier.padding(it))
+        //CategoryScreen(modifier = Modifier.padding(it))
+        ListScreen(modifier = Modifier.padding(it))
     }
 
 }
