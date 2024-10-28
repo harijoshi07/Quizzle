@@ -21,7 +21,17 @@ import androidx.compose.ui.unit.sp
 import com.example.quizgame.R
 
 @Composable
-fun InputForm(title: String, icon: Int, onChange: (String) -> Unit, modifier: Modifier = Modifier) {
+fun InputForm(
+    title: String,
+    icon: Int,
+    onChange: (String) -> Unit,
+    value: String = "",
+    disable: Boolean = false,
+    colorPaint: Int = R.color.white,
+    modifier: Modifier = Modifier
+) {
+
+    val textInput = ""
 
     Spacer(modifier = Modifier.height(12.dp))
     Text(
@@ -31,7 +41,7 @@ fun InputForm(title: String, icon: Int, onChange: (String) -> Unit, modifier: Mo
     )
     Spacer(modifier = Modifier.height(10.dp))
     OutlinedTextField(
-        value = "",
+        value = value.ifBlank { textInput },
         onValueChange = {},
         leadingIcon = {
             Icon(
@@ -44,11 +54,10 @@ fun InputForm(title: String, icon: Int, onChange: (String) -> Unit, modifier: Mo
         },
         label = { Text(text = "Enter Your $title") },
         colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = Color.White,
-            focusedContainerColor = Color.White
+            unfocusedContainerColor = colorResource(id = colorPaint),
+            focusedContainerColor = colorResource(id = colorPaint)
         ),
-        shape = RoundedCornerShape(8.dp)
-        ,
+        shape = RoundedCornerShape(8.dp),
         modifier = Modifier.fillMaxWidth()
     )
 
