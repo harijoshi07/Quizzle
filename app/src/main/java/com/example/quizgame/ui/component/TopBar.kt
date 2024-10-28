@@ -38,20 +38,24 @@ fun TopBar(title: String, modifier: Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GeneralTopBar(title: String, modifier: Modifier = Modifier) {
+
+    val colorPaint: Color =
+        if (title == "login" || title == "register") Color.Black else Color.White
+
     CenterAlignedTopAppBar(
         title = {
             Text(
                 text = title,
                 fontWeight = FontWeight.Bold,
                 fontSize = 28.sp,
-                color = Color.Black
+                color = colorPaint
             )
         },
         navigationIcon = {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = null,
-                tint = Color.Black,
+                tint = colorPaint,
                 modifier = Modifier.size(40.dp)
             )
         }
@@ -111,6 +115,6 @@ fun TopProfileBar(title: String) {
 fun TopBarPreview(modifier: Modifier = Modifier) {
     //TopBar(title = "Top Bar Title")
     //TopProfileBar(title = "")
-    GeneralTopBar(title = "Home")
+    GeneralTopBar(title = "login")
 
 }
