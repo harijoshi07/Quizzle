@@ -13,6 +13,7 @@ import com.example.quizgame.ui.component.FloatingButton
 import com.example.quizgame.ui.component.TopBar
 import com.example.quizgame.ui.screen.category.CategoryScreen
 import com.example.quizgame.ui.screen.home.HomeScreen
+import com.example.quizgame.ui.screen.profile.ProfileScreen
 import com.example.quizgame.ui.screen.shared.ListScreen
 
 @Composable
@@ -27,7 +28,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
     ) {
         //HomeScreen(it)
         //CategoryScreen(modifier = Modifier.padding(it))
-        ListScreen(modifier = Modifier.padding(it))
+        //ListScreen(modifier = Modifier.padding(it))
+        ProfileScreen(modifier = Modifier.padding(it))
     }
 
 }
