@@ -30,10 +30,15 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     Scaffold(
-        topBar = { TopBar(title = "home") },
+        topBar = { TopBar(navBackStackEntry = navBackStackEntry) },
         floatingActionButton = { FloatingButton() },
         floatingActionButtonPosition = FabPosition.Center,
-        bottomBar = { BottomBar() },
+        bottomBar = {
+            BottomBar(
+                navController = navController,
+                navBackStackEntry = navBackStackEntry
+            )
+        },
         containerColor = colorResource(id = R.color.primary_purple)
     ) { innerPadding ->
         NavHost(navController = navController, startDestination = Screen.Home.route) {

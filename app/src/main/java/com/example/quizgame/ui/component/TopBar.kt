@@ -24,13 +24,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavBackStackEntry
 import com.example.quizgame.R
+import com.example.quizgame.presentation.navigation.Screen
 import com.example.quizgame.utils.DateConverter
 
 @Composable
-fun TopBar(title: String, modifier: Modifier = Modifier) {
+fun TopBar(navBackStackEntry: NavBackStackEntry?, modifier: Modifier = Modifier) {
+
+    val title = navBackStackEntry?.destination?.route ?: Screen.Home.route
+
     when (title) {
-        "home" -> TopProfileBar(title)
+        Screen.Home.route -> TopProfileBar(title)
         else -> GeneralTopBar(title)
     }
 }

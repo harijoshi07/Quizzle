@@ -11,6 +11,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.SpanStyle
@@ -21,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.quizgame.R
 import com.example.quizgame.ui.component.InputForm
@@ -30,8 +32,10 @@ import com.example.quizgame.ui.component.TopBar
 @Composable
 fun RegisterScreen(navController: NavController, modifier: Modifier = Modifier) {
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
     Scaffold(
-        topBar = { TopBar(title = "Register") },
+        topBar = { TopBar(navBackStackEntry = navBackStackEntry) },
         containerColor = colorResource(id = R.color.tertiary_blue)
     ) {
         Column(
