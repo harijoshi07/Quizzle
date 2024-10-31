@@ -66,4 +66,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //navigation
+    implementation("androidx.navigation:navigation-compose:2.8.3")
+
+    // ViewModel utilities for Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+
+    //koin
+    implementation("io.insert-koin:koin-core:4.0.0")
+    implementation("io.insert-koin:koin-android:4.0.0")
+    implementation("io.insert-koin:koin-androidx-compose:4.0.0")
+
+    //data-store
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
 }
