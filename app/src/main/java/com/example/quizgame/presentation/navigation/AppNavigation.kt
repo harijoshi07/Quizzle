@@ -7,13 +7,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.quizgame.presentation.MainScreen
+import com.example.quizgame.ui.MainViewModel
 import com.example.quizgame.ui.screen.auth.LoginScreen
 import com.example.quizgame.ui.screen.auth.RegisterScreen
 import com.example.quizgame.ui.screen.auth.WelcomeScreen
 import com.example.quizgame.ui.screen.onboarding.OnBoardingScreen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun NavigationScreen(modifier: Modifier = Modifier) {
+fun NavigationScreen(
+    mainViewModel: MainViewModel = koinViewModel(), modifier: Modifier = Modifier
+) {
 
     val navController = rememberNavController()
 
