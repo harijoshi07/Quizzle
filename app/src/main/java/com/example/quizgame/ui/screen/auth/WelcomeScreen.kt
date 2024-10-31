@@ -25,10 +25,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.quizgame.R
 
 @Composable
-fun WelcomeScreen(modifier: Modifier = Modifier) {
+fun WelcomeScreen(navController: NavController, modifier: Modifier = Modifier) {
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -113,6 +115,6 @@ fun WelcomeScreen(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun WelcomeScreenPreview() {
-    WelcomeScreen()
+    WelcomeScreen(navController = rememberNavController())
 
 }

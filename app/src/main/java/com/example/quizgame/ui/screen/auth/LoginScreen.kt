@@ -20,12 +20,14 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.quizgame.R
 import com.example.quizgame.ui.component.InputForm
 import com.example.quizgame.ui.component.TopBar
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(navController: NavController, modifier: Modifier = Modifier) {
 
     Scaffold(
         topBar = { TopBar(title = "Login") },
@@ -84,6 +86,6 @@ fun LoginScreen(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen(navController = rememberNavController())
 
 }
