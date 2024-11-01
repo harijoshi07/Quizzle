@@ -20,6 +20,7 @@ fun NavigationScreen(
 ) {
 
     val navController = rememberNavController()
+    val token = mainViewModel.getToken().value
 
     NavHost(navController = navController, startDestination = Screen.Main.route) {
 
