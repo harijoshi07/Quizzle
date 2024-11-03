@@ -63,7 +63,10 @@ fun GeneralTopBar(title: String, modifier: Modifier = Modifier) {
                 tint = colorPaint,
                 modifier = Modifier.size(40.dp)
             )
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.Transparent
+        )
     )
 
 }
