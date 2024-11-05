@@ -23,6 +23,11 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,6 +65,10 @@ fun QuizSelectScreen(modifier: Modifier = Modifier) {
 @Composable
 fun QuizSelectComponent(modifier: Modifier = Modifier) {
 
+    var amount by remember { mutableIntStateOf(10) }
+    var type by remember { mutableStateOf("multiple") }
+    var difficulty by remember { mutableStateOf("easy") }
+
     Card(
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.white_background)
@@ -78,7 +87,35 @@ fun QuizSelectComponent(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Bold
             )
 
-            InputType()
+            InputType(
+                onClick = {
+                    amount = it.toInt()
+                },
+                listType = listOf("10", "20", "30"),
+                title = "Number of Questions",
+                data = amount.toString(),
+                painter = R.drawable.baseline_question_mark_24
+            )
+
+            InputType(
+                onClick = {
+                    difficulty = it
+                },
+                listType = listOf("easy", "medium", "hard","mixed"),
+                title = "Difficulty of Questions",
+                data = difficulty,
+                painter = R.drawable.lv
+            )
+
+            InputType(
+                onClick = {
+                    type = it
+                },
+                listType = listOf("mixed", "multiple", "boolean"),
+                title = "Type of Questions",
+                data = type,
+                painter = R.drawable.box_stype
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -99,13 +136,24 @@ fun QuizSelectComponent(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun InputType(modifier: Modifier = Modifier) {
+fun InputType(
+    onClick: (String) -> Unit,
+    listType: List<String>,
+    title: String,
+    data: String,
+    painter: Int,
+    modifier: Modifier = Modifier
+) {
+
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
 
     Spacer(modifier = Modifier.height(16.dp))
 
     Column {
         Text(
-            text = "Number of Questions",
+            text = title,
             fontSize = 18.sp,
             fontWeight = FontWeight.Normal
         )
@@ -113,7 +161,7 @@ fun InputType(modifier: Modifier = Modifier) {
 
         Box {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { isExpanded = true },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.tertiary_blue),
@@ -135,7 +183,7 @@ fun InputType(modifier: Modifier = Modifier) {
                         ) {
 
                             Icon(
-                                painter = painterResource(id = R.drawable.baseline_question_mark_24),
+                                painter = painterResource(id = painter),
                                 contentDescription = "",
                                 tint = colorResource(id = R.color.primary_purple),
                                 modifier = Modifier
@@ -147,7 +195,7 @@ fun InputType(modifier: Modifier = Modifier) {
                         Spacer(modifier = Modifier.width(8.dp))
 
                         Text(
-                            text = "10 Questions",
+                            text = data,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -161,13 +209,18 @@ fun InputType(modifier: Modifier = Modifier) {
             }
 
             DropdownMenu(
-                expanded = true,
-                onDismissRequest = { /*TODO*/ }) {
+                expanded = isExpanded,
+                onDismissRequest = { isExpanded = false }) {
 
-                DropdownMenuItem(
-                    text = { Text(text = "Ad") },
-                    onClick = { /*TODO*/ }
-                )
+                listType.forEach {
+                    DropdownMenuItem(
+                        text = { Text(text = it) },
+                        onClick = {
+                            onClick(it)
+                            isExpanded = false
+                        }
+                    )
+                }
             }
         }
     }
