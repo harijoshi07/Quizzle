@@ -36,9 +36,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.quizgame.R
+import com.example.quizgame.data.quizCategoryDescription
 
 @Composable
-fun QuizStartScreen(modifier: Modifier = Modifier) {
+fun QuizStartScreen(quiz: String, modifier: Modifier = Modifier) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -54,14 +55,14 @@ fun QuizStartScreen(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        QuizContent()
+        QuizContent(quiz)
     }
 
 }
 
 
 @Composable
-fun QuizContent(modifier: Modifier = Modifier) {
+fun QuizContent(quiz: String, modifier: Modifier = Modifier) {
 
     Card(
         colors = CardDefaults.cardColors(
@@ -77,7 +78,7 @@ fun QuizContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             QuizType()
             Spacer(modifier = Modifier.height(16.dp))
-            ContentDescription()
+            ContentDescription(quiz)
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = { /*TODO*/ },
@@ -189,7 +190,7 @@ fun BoxType(painter: Int, text: String) {
 }
 
 @Composable
-fun ContentDescription(modifier: Modifier = Modifier) {
+fun ContentDescription(category: String, modifier: Modifier = Modifier) {
 
     Column {
 
@@ -201,7 +202,7 @@ fun ContentDescription(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "This quiz is designed to challenge players on various aspects of the gaming universe, from the classics to the latest releases.",
+            text = quizCategoryDescription[category]!!,
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold
         )
@@ -214,11 +215,11 @@ fun ContentDescription(modifier: Modifier = Modifier) {
 @Composable
 private fun QuizStartScreenPreview() {
 
-    QuizStartScreen()
+    QuizStartScreen(quiz = "History")
     //QuizContent()
     //ContentHeader()
     //QuizType()
     //BoxType(painter = R.drawable.trophy, text = "")
-    //ContentDescription()
+    //ContentDescription(category = "History")
 
 }
