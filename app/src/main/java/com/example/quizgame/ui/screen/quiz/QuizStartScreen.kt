@@ -36,10 +36,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.quizgame.R
+import com.example.quizgame.data.SettingsQuiz
 import com.example.quizgame.data.quizCategoryDescription
 
 @Composable
-fun QuizStartScreen(quiz: String, modifier: Modifier = Modifier) {
+fun QuizStartScreen(quiz: String, settingsQuiz: SettingsQuiz, modifier: Modifier = Modifier) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -55,14 +56,14 @@ fun QuizStartScreen(quiz: String, modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        QuizContent(quiz)
+        QuizContent(quiz, settingsQuiz)
     }
 
 }
 
 
 @Composable
-fun QuizContent(quiz: String, modifier: Modifier = Modifier) {
+fun QuizContent(quiz: String, settingsQuiz: SettingsQuiz, modifier: Modifier = Modifier) {
 
     Card(
         colors = CardDefaults.cardColors(
@@ -76,7 +77,7 @@ fun QuizContent(quiz: String, modifier: Modifier = Modifier) {
 
             ContentHeader()
             Spacer(modifier = Modifier.height(16.dp))
-            QuizType()
+            QuizType(settingsQuiz)
             Spacer(modifier = Modifier.height(16.dp))
             ContentDescription(quiz)
             Spacer(modifier = Modifier.height(16.dp))
@@ -139,7 +140,7 @@ fun ContentHeader() {
 }
 
 @Composable
-fun QuizType(modifier: Modifier = Modifier) {
+fun QuizType(settingsQuiz: SettingsQuiz, modifier: Modifier = Modifier) {
 
     Column(
         modifier = Modifier
@@ -154,7 +155,10 @@ fun QuizType(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth(),
         ) {
 
-            BoxType(painter = R.drawable.baseline_question_mark_24, text = "10 Question")
+            BoxType(
+                painter = R.drawable.baseline_question_mark_24,
+                text = "${settingsQuiz.amount} questions"
+            )
             Spacer(modifier = Modifier.width(30.dp))
             BoxType(painter = R.drawable.baseline_ballot_24, text = "Medium")
         }
@@ -215,7 +219,7 @@ fun ContentDescription(category: String, modifier: Modifier = Modifier) {
 @Composable
 private fun QuizStartScreenPreview() {
 
-    QuizStartScreen(quiz = "History")
+    QuizStartScreen(quiz = "History", settingsQuiz = SettingsQuiz())
     //QuizContent()
     //ContentHeader()
     //QuizType()
