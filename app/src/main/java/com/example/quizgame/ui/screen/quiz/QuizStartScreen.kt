@@ -40,7 +40,13 @@ import com.example.quizgame.data.SettingsQuiz
 import com.example.quizgame.data.quizCategoryDescription
 
 @Composable
-fun QuizStartScreen(quiz: String, settingsQuiz: SettingsQuiz, modifier: Modifier = Modifier) {
+fun QuizStartScreen(
+    quizCategory: String,
+    quiz: String,
+    settingsQuiz: SettingsQuiz,
+    navigateToSelect: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -56,14 +62,20 @@ fun QuizStartScreen(quiz: String, settingsQuiz: SettingsQuiz, modifier: Modifier
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        QuizContent(quiz, settingsQuiz)
+        QuizContent(quizCategory, quiz, settingsQuiz, navigateToSelect)
     }
 
 }
 
 
 @Composable
-fun QuizContent(quiz: String, settingsQuiz: SettingsQuiz, modifier: Modifier = Modifier) {
+fun QuizContent(
+    quizCategory: String,
+    quiz: String,
+    settingsQuiz: SettingsQuiz,
+    navigateToSelect: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     Card(
         colors = CardDefaults.cardColors(
@@ -75,7 +87,7 @@ fun QuizContent(quiz: String, settingsQuiz: SettingsQuiz, modifier: Modifier = M
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
 
-            ContentHeader()
+            ContentHeader(quizCategory, quiz, navigateToSelect)
             Spacer(modifier = Modifier.height(16.dp))
             QuizType(settingsQuiz)
             Spacer(modifier = Modifier.height(16.dp))
@@ -98,7 +110,7 @@ fun QuizContent(quiz: String, settingsQuiz: SettingsQuiz, modifier: Modifier = M
 }
 
 @Composable
-fun ContentHeader() {
+fun ContentHeader(quizCategory: String, quiz: String, navigateToSelect: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -106,12 +118,12 @@ fun ContentHeader() {
     ) {
         Column {
             Text(
-                text = "Entertaiment",
+                text = quizCategory,
                 fontSize = 20.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Video Games",
+                text = quiz,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -124,7 +136,7 @@ fun ContentHeader() {
                     color = colorResource(id = R.color.secondary_blue),
                     shape = CircleShape
                 ),
-            onClick = { /*TODO*/ },
+            onClick = navigateToSelect,
             colors = IconButtonDefaults.iconButtonColors(
                 contentColor = colorResource(id = R.color.white_background),
                 containerColor = colorResource(id = R.color.primary_purple)
@@ -219,7 +231,11 @@ fun ContentDescription(category: String, modifier: Modifier = Modifier) {
 @Composable
 private fun QuizStartScreenPreview() {
 
-    QuizStartScreen(quiz = "History", settingsQuiz = SettingsQuiz())
+    QuizStartScreen(
+        quizCategory = "History",
+        quiz = "History",
+        settingsQuiz = SettingsQuiz(),
+        navigateToSelect = {})
     //QuizContent()
     //ContentHeader()
     //QuizType()
