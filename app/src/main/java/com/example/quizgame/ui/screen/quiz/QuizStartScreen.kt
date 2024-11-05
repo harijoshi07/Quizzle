@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.example.quizgame.R
 import com.example.quizgame.data.SettingsQuiz
 import com.example.quizgame.data.quizCategoryDescription
+import com.example.quizgame.data.quizCategoryId
 
 @Composable
 fun QuizStartScreen(
@@ -45,6 +46,7 @@ fun QuizStartScreen(
     quiz: String,
     settingsQuiz: SettingsQuiz,
     navigateToSelect: () -> Unit,
+    navigateToGames: (SettingsQuiz) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -62,7 +64,7 @@ fun QuizStartScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        QuizContent(quizCategory, quiz, settingsQuiz, navigateToSelect)
+        QuizContent(quizCategory, quiz, settingsQuiz, navigateToSelect, navigateToGames)
     }
 
 }
@@ -74,8 +76,15 @@ fun QuizContent(
     quiz: String,
     settingsQuiz: SettingsQuiz,
     navigateToSelect: () -> Unit,
+    navigateToGames: (SettingsQuiz) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val settingsData = settingsQuiz.copy(
+        category = quizCategoryId[quiz]!!,
+        difficulty = if (settingsQuiz.difficulty == "mixed") "" else settingsQuiz.difficulty,
+        type = if (settingsQuiz.type == "mixed") "" else settingsQuiz.type
+    )
 
     Card(
         colors = CardDefaults.cardColors(
@@ -94,7 +103,7 @@ fun QuizContent(
             ContentDescription(quiz)
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { navigateToGames(settingsData) },
                 colors = ButtonDefaults.buttonColors(
                     contentColor = colorResource(id = R.color.white_background),
                     containerColor = colorResource(id = R.color.primary_purple)
@@ -235,7 +244,9 @@ private fun QuizStartScreenPreview() {
         quizCategory = "History",
         quiz = "History",
         settingsQuiz = SettingsQuiz(),
-        navigateToSelect = {})
+        navigateToSelect = {},
+        navigateToGames = {}
+    )
     //QuizContent()
     //ContentHeader()
     //QuizType()
