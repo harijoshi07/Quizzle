@@ -38,9 +38,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.quizgame.R
+import com.example.quizgame.data.SettingsQuiz
 
 @Composable
-fun QuizSelectScreen(modifier: Modifier = Modifier) {
+fun QuizSelectScreen(navigateToStart: (SettingsQuiz) -> Unit, modifier: Modifier = Modifier) {
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -57,13 +58,13 @@ fun QuizSelectScreen(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        QuizSelectComponent()
+        QuizSelectComponent(navigateToStart)
     }
 
 }
 
 @Composable
-fun QuizSelectComponent(modifier: Modifier = Modifier) {
+fun QuizSelectComponent(navigateToStart: (SettingsQuiz) -> Unit, modifier: Modifier = Modifier) {
 
     var amount by remember { mutableIntStateOf(10) }
     var type by remember { mutableStateOf("multiple") }
@@ -101,7 +102,7 @@ fun QuizSelectComponent(modifier: Modifier = Modifier) {
                 onClick = {
                     difficulty = it
                 },
-                listType = listOf("easy", "medium", "hard","mixed"),
+                listType = listOf("easy", "medium", "hard", "mixed"),
                 title = "Difficulty of Questions",
                 data = difficulty,
                 painter = R.drawable.lv
@@ -120,7 +121,11 @@ fun QuizSelectComponent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    navigateToStart(
+                        SettingsQuiz(amount = amount, type = type, difficulty = difficulty)
+                    )
+                },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.primary_purple),
@@ -128,7 +133,7 @@ fun QuizSelectComponent(modifier: Modifier = Modifier) {
                 ),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Let's Play", fontSize = 20.sp)
+                Text(text = "Save", fontSize = 20.sp)
             }
         }
     }
@@ -231,7 +236,7 @@ fun InputType(
 @Composable
 private fun QuizOptionScreenPreview() {
 
-    QuizSelectScreen()
+    QuizSelectScreen(navigateToStart = {})
     //QuizOptionComponent()
     //InputType()
 
