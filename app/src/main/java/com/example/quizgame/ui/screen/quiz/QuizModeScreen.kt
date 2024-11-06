@@ -181,6 +181,17 @@ fun QuizQuestionComponent(
     modifier: Modifier = Modifier
 ) {
 
+    val scope = rememberCoroutineScope()
+
+    //This code prepares answer choices for a single question in a quiz by combining incorrect
+    // and correct answers, then placing the correct answer at a random position within the list.
+    val incorrectAnswers = quiz[pagerState.currentPage].incorrectAnswers
+    val combinedAnswers = mutableListOf<String>()
+    combinedAnswers.addAll(incorrectAnswers)
+    val correctAnswer = quiz.map { it }
+    val randomIndex = (0 until combinedAnswers.size).random()
+    combinedAnswers.add(randomIndex, quiz[pagerState.currentPage].correctAnswer)
+
     Card(
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.white_background)
