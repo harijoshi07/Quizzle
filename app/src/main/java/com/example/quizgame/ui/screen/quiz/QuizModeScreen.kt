@@ -130,7 +130,7 @@ fun QuizProgressComponent(total: Int, pagerState: PagerState, modifier: Modifier
                 .background(color = colorResource(id = R.color.orange_primary))
         ) {
             Text(
-                text = "4 / 10",
+                text = "${pagerState.currentPage + 1} / $total",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Black,
                 color = colorResource(id = R.color.white),
@@ -142,7 +142,7 @@ fun QuizProgressComponent(total: Int, pagerState: PagerState, modifier: Modifier
         Spacer(modifier = Modifier.width(8.dp))
 
         LinearProgressIndicator(
-            progress = { 0.4f },
+            progress = (pagerState.currentPage + 1).toFloat() / total.toFloat(),
             color = Color.White,
             trackColor = colorResource(id = R.color.white_transparent),
             modifier = Modifier
