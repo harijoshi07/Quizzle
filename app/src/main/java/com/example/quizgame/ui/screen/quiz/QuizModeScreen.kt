@@ -1,6 +1,8 @@
 package com.example.quizgame.ui.screen.quiz
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -27,10 +31,15 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,23 +47,75 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.quizgame.R
+import com.example.quizgame.data.SettingsQuiz
+import com.example.quizgame.data.remote.response.ResultsItem
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun QuizModeScreen(modifier: Modifier = Modifier) {
+fun QuizModeScreen(
+    quizName: String,
+    category: String,
+    settingsQuiz: SettingsQuiz,
+    navigateToResult: (Int, Int) -> Unit,
+    quizViewModel: QuizViewModel = koinViewModel(),
+    modifier: Modifier = Modifier
+) {
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = colorResource(id = R.color.primary_purple))
     ) {
-        QuizProgressComponent()
-        QuizQuestionComponent()
-    }
 
+        LaunchedEffect(key1 = settingsQuiz) {
+            quizViewModel.quiz(settingsQuiz)
+        }
+
+        //It uses QuizViewModel to load quiz data, displays loading/error states,
+        //and shows quiz questions once the data is loaded
+        quizViewModel.quiz.collectAsState().value.let { quiz ->
+
+            when {
+                quiz.loading -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.loading),
+                            contentDescription = null
+                        )
+                    }
+                }
+
+                quiz.error != null -> {
+                    Toast.makeText(LocalContext.current, quiz.error, Toast.LENGTH_SHORT).show()
+                }
+
+                quiz.data != null -> {
+                    val pagerState = rememberPagerState {
+                        quiz.data.size
+                    }
+
+                    val answer = remember { mutableListOf<String>() }
+                    QuizProgressComponent(quiz.data.size, pagerState)
+                    QuizQuestionComponent(
+                        quizViewModel,
+                        quiz.data,
+                        pagerState,
+                        answer,
+                        quizName,
+                        category,
+                        navigateToResult
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
-fun QuizProgressComponent(modifier: Modifier = Modifier) {
+fun QuizProgressComponent(total: Int, pagerState: PagerState, modifier: Modifier = Modifier) {
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -109,7 +170,16 @@ fun QuizProgressComponent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun QuizQuestionComponent(modifier: Modifier = Modifier) {
+fun QuizQuestionComponent(
+    quizViewModel: QuizViewModel,
+    quiz: List<ResultsItem>,
+    pagerState: PagerState,
+    answer: MutableList<String>,
+    quizName: String,
+    category: String,
+    navigateToResult: (Int, Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     Card(
         colors = CardDefaults.cardColors(
@@ -227,7 +297,12 @@ fun QuizQuestionComponent(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun QuizModeScreenPreview() {
-    QuizModeScreen()
+    QuizModeScreen(
+        quizName = "",
+        category = "",
+        settingsQuiz = SettingsQuiz(),
+        navigateToResult = { a, b -> }
+    )
     //QuizProgressComponent()
     //QuizQuestionComponent()
 }
