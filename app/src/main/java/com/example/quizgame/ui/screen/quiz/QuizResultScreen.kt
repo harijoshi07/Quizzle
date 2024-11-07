@@ -29,7 +29,14 @@ import androidx.compose.ui.unit.sp
 import com.example.quizgame.R
 
 @Composable
-fun QuizResultScreen(modifier: Modifier = Modifier) {
+fun QuizResultScreen(
+    correctAnswer: Int,
+    size: Int,
+    quiz: String,
+    navigateToQuiz: (String) -> Unit,
+    navigateToHome: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     Column(
         modifier = Modifier.background(color = colorResource(id = R.color.primary_purple))
@@ -47,10 +54,10 @@ fun QuizResultScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxSize()
             ) {
 
-                BoxResult()
+                BoxResult(correctAnswer, size, quiz, navigateToQuiz)
 
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = navigateToHome,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorResource(id = R.color.primary_purple)
                     ),
@@ -75,7 +82,13 @@ fun QuizResultScreen(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun BoxResult(modifier: Modifier = Modifier) {
+fun BoxResult(
+    correctAnswer: Int,
+    size: Int,
+    quiz: String,
+    navigateToQuiz: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     Column(modifier = Modifier.padding(16.dp)) {
         Card(
@@ -102,7 +115,7 @@ fun BoxResult(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { navigateToQuiz(quiz) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorResource(id = R.color.white_transparent)
                     ),
@@ -125,12 +138,15 @@ fun BoxResult(modifier: Modifier = Modifier) {
         Column(modifier = Modifier.padding(8.dp)) {
 
             Row {
-                TextResult(title = "CORRECT ANSWER", value = "7 QUESTION")
+                TextResult(title = "CORRECT ANSWER", value = "$correctAnswer QUESTION")
                 Spacer(modifier = Modifier.weight(1f))
-                TextResult(title = "COMPLETION", value = "70%")
+                TextResult(
+                    title = "COMPLETION",
+                    value = "${if (correctAnswer == 0) 0 else (correctAnswer * 100) / size}%"
+                )
             }
             Spacer(modifier = Modifier.height(16.dp))
-            TextResult(title = "INCORRECT ANSWER", value = "3 QUESTION")
+            TextResult(title = "INCORRECT ANSWER", value = "${size - correctAnswer} QUESTION")
         }
     }
 }
@@ -165,7 +181,7 @@ fun TextResult(
 @Composable
 private fun QuizResultScreenPreview() {
 
-    QuizResultScreen()
+    QuizResultScreen(correctAnswer = 1, size = 5, quiz = "Geography", {}, {})
     //BoxResult()
     //TextResult(title = "title", value = "value")
 
