@@ -8,34 +8,52 @@ data class Category(
     val icon: Int = 0
 )
 
+sealed class CategoryQuiz(val title:String){
+    data object Education : CategoryQuiz("Education")
+    data object Entertainment : CategoryQuiz("Entertainment")
+    data object Technology : CategoryQuiz("Technology")
+    data object Art : CategoryQuiz("Art")
+    data object Science : CategoryQuiz("Science")
+    data object Showbiz : CategoryQuiz("Showbiz")
+}
+
+val iconCategory = mapOf(
+    CategoryQuiz.Entertainment.title to R.drawable.entertainment,
+    CategoryQuiz.Education.title to R.drawable.education,
+    CategoryQuiz.Technology.title to R.drawable.tech,
+    CategoryQuiz.Art.title to R.drawable.art,
+    CategoryQuiz.Science.title to R.drawable.science,
+    CategoryQuiz.Showbiz.title to R.drawable.showbiz
+)
+
 val itemCategory = listOf(
     Category(
-        title = "Entertainment",
+        title = CategoryQuiz.Entertainment.title,
         amountQuiz = 4,
         icon = R.drawable.entertainment
     ),
     Category(
-        title = "Education",
+        title = CategoryQuiz.Education.title,
         amountQuiz = 4,
         icon = R.drawable.education
     ),
     Category(
-        title = "Technology",
+        title = CategoryQuiz.Technology.title,
         amountQuiz = 4,
         icon = R.drawable.tech
     ),
     Category(
-        title = "Art",
+        title = CategoryQuiz.Art.title,
         amountQuiz = 4,
         icon = R.drawable.art
     ),
     Category(
-        title = "Science",
+        title = CategoryQuiz.Science.title,
         amountQuiz = 4,
         icon = R.drawable.science
     ),
     Category(
-        title = "Showbiz",
+        title = CategoryQuiz.Showbiz.title,
         amountQuiz = 4,
         icon = R.drawable.showbiz
     )
