@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -42,13 +45,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.HtmlCompat
 import com.example.quizgame.R
 import com.example.quizgame.data.SettingsQuiz
+import com.example.quizgame.data.iconCategory
 import com.example.quizgame.data.remote.response.ResultsItem
+import com.example.quizgame.utils.countMatchingElements
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -188,7 +196,7 @@ fun QuizQuestionComponent(
     val incorrectAnswers = quiz[pagerState.currentPage].incorrectAnswers
     val combinedAnswers = mutableListOf<String>()
     combinedAnswers.addAll(incorrectAnswers)
-    val correctAnswer = quiz.map { it }
+    val correctAnswer = quiz.map { it.correctAnswer }
     val randomIndex = (0 until combinedAnswers.size).random()
     combinedAnswers.add(randomIndex, quiz[pagerState.currentPage].correctAnswer)
 
@@ -207,7 +215,9 @@ fun QuizQuestionComponent(
                     shape = RoundedCornerShape(10.dp)
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.games),
+                        painter = painterResource(
+                            id = iconCategory[category] ?: R.drawable.box_stype
+                        ),
                         contentDescription = "",
                         tint = colorResource(id = R.color.primary_purple),
                         modifier = Modifier.padding(10.dp)
@@ -217,7 +227,7 @@ fun QuizQuestionComponent(
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Text(
-                    text = "Video Games",
+                    text = quizName,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -226,7 +236,7 @@ fun QuizQuestionComponent(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "QUESTION 4 OF 10",
+                text = "QUESTION ${pagerState.currentPage + 1} OF ${quiz.size}",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(id = R.color.text_gray)
@@ -235,60 +245,106 @@ fun QuizQuestionComponent(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "What is the name of the virus in ”Metal Gear Solid” ?",
+                text = buildAnnotatedString {
+                    append(
+                        HtmlCompat.fromHtml(
+                            quiz[pagerState.currentPage].question,
+                            HtmlCompat.FROM_HTML_MODE_LEGACY
+                        )
+                    )
+                },
                 fontSize = 24.sp,
                 fontWeight = FontWeight.SemiBold,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            val isSelected = remember {
+                mutableStateOf(false)
+            }
             //lazy column
-            Column(modifier = Modifier.fillMaxHeight(0.9f)) {
-                Button(
-                    onClick = { /*TODO*/ },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(id = R.color.white),
-                        contentColor = colorResource(id = R.color.black)
-                    ),
-                    border = BorderStroke(
-                        width = 0.5.dp,
-                        color = colorResource(id = R.color.black)
-                    ),
-                    contentPadding = PaddingValues(16.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    //if long, 16 sp; if short, 20 sp
-                    Text(
-                        text = "FOXDIE",
-                        fontSize = 20.sp,
+            LazyColumn(modifier = Modifier.fillMaxHeight(0.9f)) {
+
+                items(combinedAnswers) {
+                    isSelected.value =
+                        answer.size > pagerState.currentPage && answer[pagerState.currentPage] == it
+
+                    Button(
+                        onClick = {
+                            answer.add(pagerState.currentPage, it)
+                            if (answer.size > pagerState.currentPage + 1) {
+                                answer.removeAt(pagerState.currentPage + 1)
+                            }
+                            isSelected.value =
+                                answer.size > pagerState.currentPage && answer[pagerState.currentPage] == it
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(id = if (answer.contains(it) || isSelected.value) R.color.primary_purple else R.color.white),
+                            contentColor = colorResource(id = if (answer.contains(it) || isSelected.value) R.color.white else R.color.black)
+                        ),
+                        border = BorderStroke(
+                            width = 0.5.dp,
+                            color = colorResource(id = R.color.black)
+                        ),
+                        contentPadding = PaddingValues(16.dp),
                         modifier = Modifier.fillMaxWidth()
-                    )
+                    ) {
+                        //if long, 16 sp; if short, 20 sp
+                        Text(
+                            text = buildAnnotatedString {
+                                append(
+                                    HtmlCompat.fromHtml(
+                                        it,
+                                        HtmlCompat.FROM_HTML_MODE_LEGACY
+                                    ).toString()
+                                )
+                            },
+                            fontSize = 20.sp,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                    }
 
                 }
             }
 
+            val isSubmit = pagerState.pageCount == pagerState.currentPage + 1
+
             Row {
-                IconButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .border(
-                            width = 1.5.dp,
-                            color = colorResource(id = R.color.primary_purple),
-                            shape = RoundedCornerShape(10.dp)
+                if (pagerState.currentPage != 0) {
+                    IconButton(
+                        onClick = { scope.launch { pagerState.scrollToPage(pagerState.currentPage - 1) } },
+                        modifier = Modifier
+                            .border(
+                                width = 1.5.dp,
+                                color = colorResource(id = R.color.primary_purple),
+                                shape = RoundedCornerShape(10.dp)
+                            )
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.back),
+                            contentDescription = "back",
+                            tint = colorResource(id = R.color.primary_purple)
                         )
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.back),
-                        contentDescription = "back",
-                        tint = colorResource(id = R.color.primary_purple)
-                    )
+                    }
                 }
+
 
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        if (!isSubmit) {
+
+                            scope.launch { pagerState.scrollToPage(pagerState.currentPage + 1) }
+                        } else {
+
+                            val countMatch = countMatchingElements(correctAnswer, answer)
+                            val answerSize = answer.size
+                            navigateToResult(countMatch, answerSize)
+                        }
+                    },
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorResource(id = R.color.primary_purple)
@@ -298,7 +354,7 @@ fun QuizQuestionComponent(
                         .height(46.dp)
                 ) {
 
-                    Text(text = "Next", fontSize = 20.sp)
+                    Text(text = if (isSubmit) "Submit" else "Next", fontSize = 20.sp)
                 }
             }
         }
