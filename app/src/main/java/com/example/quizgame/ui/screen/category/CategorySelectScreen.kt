@@ -25,7 +25,11 @@ import com.example.quizgame.data.categoryQuizList
 import com.example.quizgame.ui.component.QuizCard
 
 @Composable
-fun CategorySelectScreen(quizCategory: String, modifier: Modifier = Modifier) {
+fun CategorySelectScreen(
+    quizCategory: String,
+    navigateQuiz: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     Surface(
         shape = RoundedCornerShape(topStartPercent = 8, topEndPercent = 8),
@@ -54,7 +58,10 @@ fun CategorySelectScreen(quizCategory: String, modifier: Modifier = Modifier) {
 
             LazyColumn {
                 items(categoryQuizList[quizCategory]!!) { quizCategoryItem ->
-                    QuizCard()
+                    QuizCard(
+                        category = quizCategory,
+                        quizCategory = quizCategoryItem,
+                        navigateToQuiz = { navigateQuiz(quizCategoryItem) })
                 }
 
             }
@@ -68,6 +75,6 @@ fun CategorySelectScreen(quizCategory: String, modifier: Modifier = Modifier) {
 @Composable
 private fun CategorySelectScreenPreview() {
 
-    CategorySelectScreen(quizCategory = "Education")
+    CategorySelectScreen(quizCategory = "Education", navigateQuiz = {})
 
 }

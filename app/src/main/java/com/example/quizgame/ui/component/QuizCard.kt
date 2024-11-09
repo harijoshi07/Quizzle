@@ -29,14 +29,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.quizgame.R
+import com.example.quizgame.data.iconCategory
 
 @Composable
-fun QuizCard(modifier: Modifier = Modifier) {
+fun QuizCard(category: String, quizCategory: String, navigateToQuiz: (String) -> Unit) {
     Card(
         colors = CardDefaults.cardColors(
             contentColor = Color.Black
         ),
-        border = BorderStroke(1.dp, color = colorResource(id = R.color.secondary_blue))
+        border = BorderStroke(1.dp, color = colorResource(id = R.color.secondary_blue)),
+        onClick = { navigateToQuiz(category) }
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -49,7 +51,9 @@ fun QuizCard(modifier: Modifier = Modifier) {
                     shape = RoundedCornerShape(10.dp),
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.games),
+                        painter = painterResource(
+                            id = iconCategory[category] ?: R.drawable.box_stype
+                        ),
                         contentDescription = "logo",
                         modifier = Modifier.padding(10.dp),
                         tint = colorResource(id = R.color.primary_purple)
@@ -58,12 +62,12 @@ fun QuizCard(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
                     Text(
-                        text = "Video Games",
+                        text = quizCategory,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Medium,
                     )
                     Text(
-                        text = "Entertaiment",
+                        text = category,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Light
                     )
@@ -85,6 +89,6 @@ fun QuizCard(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun QuizCardPreview() {
-    QuizCard()
+    QuizCard(category = "Entertainment", quizCategory = "Video Games", navigateToQuiz = {})
 
 }
