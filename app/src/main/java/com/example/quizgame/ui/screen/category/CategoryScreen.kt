@@ -32,10 +32,11 @@ import com.example.quizgame.data.Category
 import com.example.quizgame.data.itemCategory
 
 @Composable
-fun CategoryScreen(modifier: Modifier) {
+fun CategoryScreen(navigateToQuiz: (String) -> Unit, modifier: Modifier) {
 
     Surface(
-        modifier = modifier,
+        modifier = modifier
+            .padding(top = 20.dp),
         //color = colorResource(id = R.color.white_background),
         shape = RoundedCornerShape(topStartPercent = 8, topEndPercent = 8)
     ) {
@@ -46,14 +47,17 @@ fun CategoryScreen(modifier: Modifier) {
                 .fillMaxWidth(), columns = GridCells.Fixed(2)
         ) {
             items(itemCategory) { category ->
-                CategoryCardItem(items = category)
+                CategoryCardItem(
+                    items = category,
+                    onClick = { navigateToQuiz(category.title) }
+                )
             }
         }
     }
 }
 
 @Composable
-fun CategoryCardItem(items: Category) {
+fun CategoryCardItem(items: Category, onClick: () -> Unit) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = colorResource(id = R.color.tertiary_purple),
@@ -63,7 +67,8 @@ fun CategoryCardItem(items: Category) {
             .fillMaxWidth()
             .padding(8.dp),
         elevation = CardDefaults.cardElevation(0.dp),
-        shape = RoundedCornerShape(16)
+        shape = RoundedCornerShape(16),
+        onClick = onClick
     ) {
         Column(
             Modifier
@@ -110,12 +115,13 @@ private fun CategoryCardItemPreview() {
             title = "Entertainment",
             amountQuiz = 4,
             icon = R.drawable.entertainment
-        )
+        ),
+        onClick = {}
     )
 }
 
 @Preview
 @Composable
 private fun CategoryScreenPreview() {
-    CategoryScreen(modifier = Modifier)
+    CategoryScreen({ "" }, modifier = Modifier)
 }
