@@ -1,5 +1,6 @@
 package com.example.quizgame.ui.screen.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,18 +36,23 @@ import com.example.quizgame.R
 import com.example.quizgame.ui.component.QuizCard
 
 @Composable
-fun HomeScreen(innerPadding: PaddingValues = PaddingValues(20.dp)) {
+fun HomeScreen(
+    navigateToQuiz: (String) -> Unit,
+    navigateToCategory: () -> Unit,
+    innerPadding: PaddingValues = PaddingValues(20.dp)
+) {
     Column(
         Modifier
             .padding(innerPadding)
     ) {
         Column(Modifier.padding(20.dp)) {
             Spacer(modifier = Modifier.height(16.dp))
+            //TODO: yet to implement
             RecentBoard()
             Spacer(modifier = Modifier.height(16.dp))
-            PlayBoard()
+            PlayBoard(navigateToCategory)
         }
-        PopularList()
+        PopularList(navigateToQuiz, navigateToCategory)
     }
 }
 
@@ -102,7 +108,7 @@ fun RecentBoard(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun PlayBoard(modifier: Modifier = Modifier) {
+fun PlayBoard(navigateToCategory: () -> Unit, modifier: Modifier = Modifier) {
 
     Surface(
         color = Color(0x4DF1F4FF),
@@ -125,7 +131,7 @@ fun PlayBoard(modifier: Modifier = Modifier) {
 
             Spacer(modifier = Modifier.height(8.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = navigateToCategory,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
                     contentColor = colorResource(id = R.color.text_purple)
@@ -143,7 +149,11 @@ fun PlayBoard(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun PopularList(modifier: Modifier = Modifier) {
+fun PopularList(
+    navigateToQuiz: (String) -> Unit,
+    navigateToCategory: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     Surface(
         color = colorResource(id = R.color.white_background),
@@ -168,14 +178,15 @@ fun PopularList(modifier: Modifier = Modifier) {
                     text = "See All",
                     fontWeight = FontWeight.Medium,
                     fontSize = 18.sp,
-                    color = colorResource(id = R.color.text_purple)
+                    color = colorResource(id = R.color.text_purple),
+                    modifier = Modifier.clickable { navigateToCategory() }
                 )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            QuizCard()
-            QuizCard()
+            QuizCard("Education", "Geography", navigateToQuiz)
+            QuizCard("Show Biz", "Video Games", navigateToQuiz)
 
         }
 
@@ -185,7 +196,7 @@ fun PopularList(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen({}, {})
     //RecentBoard()
     //PlayBoard()
     //PopularList()
