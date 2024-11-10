@@ -40,13 +40,19 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 navBackStackEntry = navBackStackEntry,
                 navigateBack = { navController.popBackStack() })
         },
-        floatingActionButton = { FloatingButton() },
+        floatingActionButton = {
+            if (navBackStackEntry?.destination?.route?.startsWith("Quiz") == false) {
+                FloatingButton()
+            }
+        },
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
-            BottomBar(
-                navController = navController,
-                navBackStackEntry = navBackStackEntry
-            )
+            if (navBackStackEntry?.destination?.route?.startsWith("Quiz") == false) {
+                BottomBar(
+                    navController = navController,
+                    navBackStackEntry = navBackStackEntry
+                )
+            }
         },
         containerColor = colorResource(id = R.color.primary_purple)
     ) { innerPadding ->
