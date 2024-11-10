@@ -35,7 +35,8 @@ import com.example.quizgame.data.iconCategory
 fun QuizCard(category: String, quizCategory: String, navigateToQuiz: (String) -> Unit) {
     Card(
         colors = CardDefaults.cardColors(
-            contentColor = Color.Black
+            contentColor = Color.Black,
+            containerColor = Color.Transparent
         ),
         border = BorderStroke(1.dp, color = colorResource(id = R.color.secondary_blue)),
         onClick = { navigateToQuiz(category) }
@@ -43,7 +44,9 @@ fun QuizCard(category: String, quizCategory: String, navigateToQuiz: (String) ->
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         ) {
             Row {
                 Surface(
