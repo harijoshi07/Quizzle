@@ -35,7 +35,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     Scaffold(
-        topBar = { TopBar(navBackStackEntry = navBackStackEntry) },
+        topBar = {
+            TopBar(
+                navBackStackEntry = navBackStackEntry,
+                navigateBack = { navController.popBackStack() })
+        },
         floatingActionButton = { FloatingButton() },
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {

@@ -34,7 +34,11 @@ fun LoginScreen(navController: NavController, modifier: Modifier = Modifier) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     Scaffold(
-        topBar = { TopBar(navBackStackEntry = navBackStackEntry) },
+        topBar = {
+            TopBar(
+                navBackStackEntry = navBackStackEntry,
+                navigateBack = { navController.popBackStack() })
+        },
         containerColor = colorResource(id = R.color.tertiary_blue)
     ) {
         Column(

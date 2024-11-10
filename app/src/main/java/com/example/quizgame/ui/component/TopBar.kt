@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -26,43 +27,50 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavBackStackEntry
 import com.example.quizgame.R
+import com.example.quizgame.data.titleTopBar
 import com.example.quizgame.presentation.navigation.Screen
 import com.example.quizgame.utils.DateConverter
 
 @Composable
-fun TopBar(navBackStackEntry: NavBackStackEntry?, modifier: Modifier = Modifier) {
+fun TopBar(
+    navBackStackEntry: NavBackStackEntry?,
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     val title = navBackStackEntry?.destination?.route ?: Screen.Home.route
 
     when (title) {
-        Screen.Home.route -> TopProfileBar(title)
-        else -> GeneralTopBar(title)
+        Screen.Home.route -> TopProfileBar()
+        else -> GeneralTopBar(title, navigateBack)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GeneralTopBar(title: String, modifier: Modifier = Modifier) {
+fun GeneralTopBar(title: String, navigateBack: () -> Unit, modifier: Modifier = Modifier) {
 
     val colorPaint: Color =
-        if (title == "login" || title == "register") Color.Black else Color.White
+        if (title == "Login" || title == "Register") Color.Black else Color.White
 
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = title,
+                text = titleTopBar[title] ?: title,
                 fontWeight = FontWeight.Bold,
                 fontSize = 28.sp,
                 color = colorPaint
             )
         },
         navigationIcon = {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = null,
-                tint = colorPaint,
-                modifier = Modifier.size(40.dp)
-            )
+            IconButton(onClick = navigateBack) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = null,
+                    tint = colorPaint,
+                    modifier = Modifier.size(40.dp)
+                )
+            }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent
@@ -74,7 +82,7 @@ fun GeneralTopBar(title: String, modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopProfileBar(title: String) {
+fun TopProfileBar() {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent
@@ -123,6 +131,6 @@ fun TopProfileBar(title: String) {
 fun TopBarPreview(modifier: Modifier = Modifier) {
     //TopBar(title = "Top Bar Title")
     //TopProfileBar(title = "")
-    GeneralTopBar(title = "login")
+    GeneralTopBar(title = "Quiz", {})
 
 }
