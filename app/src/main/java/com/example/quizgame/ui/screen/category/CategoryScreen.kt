@@ -32,7 +32,7 @@ import com.example.quizgame.data.Category
 import com.example.quizgame.data.itemCategory
 
 @Composable
-fun CategoryScreen(navigateToQuiz: (String) -> Unit, modifier: Modifier) {
+fun CategoryScreen(navigateToQuiz: (String) -> Unit, modifier: Modifier=Modifier) {
 
     Surface(
         modifier = modifier

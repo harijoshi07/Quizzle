@@ -56,20 +56,18 @@ fun MainScreen(modifier: Modifier = Modifier) {
         },
         containerColor = colorResource(id = R.color.primary_purple)
     ) { innerPadding ->
-        NavHost(navController = navController, startDestination = Screen.Home.route) {
+        NavHost(navController = navController, startDestination = Screen.Home.route, modifier = Modifier.padding(innerPadding)) {
 
             composable(route = Screen.Home.route) {
                 HomeScreen(
                     navigateToQuiz = { navController.navigate(route = Screen.SelectQuiz.route + "/$it") },
                     navigateToCategory = { navController.navigate(route = Screen.Category.route) },
-                    innerPadding = innerPadding
                 )
             }
 
             composable(route = Screen.Category.route) {
                 CategoryScreen(
                     navigateToQuiz = { navController.navigate(route = Screen.SelectQuiz.route + "/$it") },
-                    modifier = Modifier.padding(innerPadding)
                 )
             }
 

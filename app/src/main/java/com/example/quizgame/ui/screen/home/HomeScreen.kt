@@ -39,11 +39,9 @@ import com.example.quizgame.ui.component.QuizCard
 fun HomeScreen(
     navigateToQuiz: (String) -> Unit,
     navigateToCategory: () -> Unit,
-    innerPadding: PaddingValues = PaddingValues(20.dp)
 ) {
     Column(
-        Modifier
-            .padding(innerPadding)
+       modifier =  Modifier.padding(20.dp)
     ) {
         Column(Modifier.padding(20.dp)) {
             Spacer(modifier = Modifier.height(16.dp))
