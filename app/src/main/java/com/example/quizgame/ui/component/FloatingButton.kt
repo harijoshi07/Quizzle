@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.dp
 import com.example.quizgame.R
 
 @Composable
-fun FloatingButton(modifier: Modifier = Modifier) {
+fun FloatingButton(navigateToCategory: () -> Unit, modifier: Modifier = Modifier) {
     FloatingActionButton(
-        onClick = { /*TODO*/ },
+        onClick = navigateToCategory,
         shape = CircleShape,
         containerColor = colorResource(id = R.color.primary_purple),
         contentColor = colorResource(id = R.color.white),
@@ -42,6 +42,6 @@ fun FloatingButton(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun FloatingButtonPreview() {
-    FloatingButton()
+    FloatingButton({})
 
 }

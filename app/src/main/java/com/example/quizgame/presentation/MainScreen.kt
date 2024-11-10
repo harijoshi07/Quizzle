@@ -42,7 +42,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         },
         floatingActionButton = {
             if (navBackStackEntry?.destination?.route?.startsWith("Quiz") == false) {
-                FloatingButton()
+                FloatingButton(navigateToCategory = { navController.navigate(Screen.Category.route) })
             }
         },
         floatingActionButtonPosition = FabPosition.Center,
@@ -56,7 +56,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
         },
         containerColor = colorResource(id = R.color.primary_purple)
     ) { innerPadding ->
-        NavHost(navController = navController, startDestination = Screen.Home.route, modifier = Modifier.padding(innerPadding)) {
+        NavHost(
+            navController = navController,
+            startDestination = Screen.Home.route,
+            modifier = Modifier.padding(innerPadding)
+        ) {
 
             composable(route = Screen.Home.route) {
                 HomeScreen(
