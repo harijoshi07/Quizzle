@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -236,77 +237,83 @@ fun QuizQuestionComponent(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = "QUESTION ${pagerState.currentPage + 1} OF ${quiz.size}",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = colorResource(id = R.color.text_gray)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = buildAnnotatedString {
-                    append(
-                        HtmlCompat.fromHtml(
-                            quiz[pagerState.currentPage].question,
-                            HtmlCompat.FROM_HTML_MODE_LEGACY
-                        )
+            HorizontalPager(state = pagerState, userScrollEnabled = false) {
+                Column {
+                    Text(
+                        text = "QUESTION ${pagerState.currentPage + 1} OF ${quiz.size}",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = colorResource(id = R.color.text_gray)
                     )
-                },
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold,
-            )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
-            val isSelected = remember {
-                mutableStateOf(false)
-            }
-            //lazy column
-            LazyColumn(modifier = Modifier.fillMaxHeight(0.9f)) {
+                    Text(
+                        text = buildAnnotatedString {
+                            append(
+                                HtmlCompat.fromHtml(
+                                    quiz[pagerState.currentPage].question,
+                                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                                )
+                            )
+                        },
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                    )
 
-                items(combinedAnswers) {
-                    isSelected.value =
-                        answer.size > pagerState.currentPage && answer[pagerState.currentPage] == it
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                    Button(
-                        onClick = {
-                            answer.add(pagerState.currentPage, it)
-                            if (answer.size > pagerState.currentPage + 1) {
-                                answer.removeAt(pagerState.currentPage + 1)
-                            }
+                    val isSelected = remember {
+                        mutableStateOf(false)
+                    }
+                    //lazy column
+                    LazyColumn(modifier = Modifier.fillMaxHeight(0.9f)) {
+
+                        items(combinedAnswers) {
                             isSelected.value =
                                 answer.size > pagerState.currentPage && answer[pagerState.currentPage] == it
-                        },
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(id = if (answer.contains(it) || isSelected.value) R.color.primary_purple else R.color.white),
-                            contentColor = colorResource(id = if (answer.contains(it) || isSelected.value) R.color.white else R.color.black)
-                        ),
-                        border = BorderStroke(
-                            width = 0.5.dp,
-                            color = colorResource(id = R.color.black)
-                        ),
-                        contentPadding = PaddingValues(16.dp),
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
-                    ) {
-                        //if long, 16 sp; if short, 20 sp
-                        Text(
-                            text = buildAnnotatedString {
-                                append(
-                                    HtmlCompat.fromHtml(
-                                        it,
-                                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                                    ).toString()
+
+                            Button(
+                                onClick = {
+                                    answer.add(pagerState.currentPage, it)
+                                    if (answer.size > pagerState.currentPage + 1) {
+                                        answer.removeAt(pagerState.currentPage + 1)
+                                    }
+                                    isSelected.value =
+                                        answer.size > pagerState.currentPage && answer[pagerState.currentPage] == it
+                                },
+                                shape = RoundedCornerShape(10.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = colorResource(id = if (answer.contains(it) || isSelected.value) R.color.primary_purple else R.color.white),
+                                    contentColor = colorResource(id = if (answer.contains(it) || isSelected.value) R.color.white else R.color.black)
+                                ),
+                                border = BorderStroke(
+                                    width = 0.5.dp,
+                                    color = colorResource(id = R.color.black)
+                                ),
+                                contentPadding = PaddingValues(16.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp)
+                            ) {
+                                //if long, 16 sp; if short, 20 sp
+                                Text(
+                                    text = buildAnnotatedString {
+                                        append(
+                                            HtmlCompat.fromHtml(
+                                                it,
+                                                HtmlCompat.FROM_HTML_MODE_LEGACY
+                                            ).toString()
+                                        )
+                                    },
+                                    fontSize = 20.sp,
+                                    modifier = Modifier.fillMaxWidth()
                                 )
-                            },
-                            fontSize = 20.sp,
-                            modifier = Modifier.fillMaxWidth()
-                        )
 
+                            }
+
+                        }
                     }
-
                 }
             }
 
