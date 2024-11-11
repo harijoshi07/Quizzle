@@ -228,7 +228,8 @@ fun QuizQuestionComponent(
 
                 Text(
                     text = quizName,
-                    fontSize = 28.sp,
+                    maxLines = 1,
+                    fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                 )
             }
@@ -253,7 +254,7 @@ fun QuizQuestionComponent(
                         )
                     )
                 },
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
             )
 
@@ -288,7 +289,7 @@ fun QuizQuestionComponent(
                             color = colorResource(id = R.color.black)
                         ),
                         contentPadding = PaddingValues(16.dp),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
                     ) {
                         //if long, 16 sp; if short, 20 sp
                         Text(
