@@ -1,5 +1,6 @@
 package com.example.quizgame.ui.screen.quiz
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -191,6 +192,7 @@ fun QuizQuestionComponent(
 ) {
 
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     //This code prepares answer choices for a single question in a quiz by combining incorrect
     // and correct answers, then placing the correct answer at a random position within the list.
@@ -284,8 +286,8 @@ fun QuizQuestionComponent(
                                 },
                                 shape = RoundedCornerShape(10.dp),
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = colorResource(id = if (answer.contains(it) || isSelected.value) R.color.primary_purple else R.color.white),
-                                    contentColor = colorResource(id = if (answer.contains(it) || isSelected.value) R.color.white else R.color.black)
+                                    containerColor = colorResource(id = if (isSelected.value) R.color.primary_purple else R.color.white),
+                                    contentColor = colorResource(id = if (isSelected.value) R.color.white else R.color.black)
                                 ),
                                 border = BorderStroke(
                                     width = 0.5.dp,
@@ -343,7 +345,13 @@ fun QuizQuestionComponent(
 
                 Button(
                     onClick = {
-                        if (!isSubmit) {
+                        if (answer.size != pagerState.currentPage + 1) {
+
+                            Toast.makeText(
+                                context, "Please select an answer", Toast.LENGTH_SHORT
+                            ).show()
+
+                        } else if (!isSubmit) {
 
                             scope.launch { pagerState.scrollToPage(pagerState.currentPage + 1) }
                         } else {
