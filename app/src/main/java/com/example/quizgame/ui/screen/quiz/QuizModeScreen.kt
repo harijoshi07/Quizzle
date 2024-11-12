@@ -1,6 +1,5 @@
 package com.example.quizgame.ui.screen.quiz
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -36,6 +35,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,6 +57,7 @@ import com.example.quizgame.R
 import com.example.quizgame.data.SettingsQuiz
 import com.example.quizgame.data.iconCategory
 import com.example.quizgame.data.remote.response.ResultsItem
+import com.example.quizgame.ui.component.AlertDialogComponent
 import com.example.quizgame.utils.countMatchingElements
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -66,6 +67,7 @@ fun QuizModeScreen(
     quizName: String,
     category: String,
     settingsQuiz: SettingsQuiz,
+    navigateToHome: () -> Unit,
     navigateToResult: (Int, Int) -> Unit,
     quizViewModel: QuizViewModel = koinViewModel(),
     modifier: Modifier = Modifier
@@ -108,7 +110,14 @@ fun QuizModeScreen(
                     }
 
                     val answer = remember { mutableListOf<String>() }
-                    QuizProgressComponent(quiz.data.size, pagerState)
+                    val dialogState = remember { mutableStateOf(false) }
+
+                    QuizProgressComponent(
+                        quiz.data.size,
+                        pagerState,
+                        dialogState,
+                        navigateToHome
+                    )
                     QuizQuestionComponent(
                         quizViewModel,
                         quiz.data,
@@ -125,7 +134,13 @@ fun QuizModeScreen(
 }
 
 @Composable
-fun QuizProgressComponent(total: Int, pagerState: PagerState, modifier: Modifier = Modifier) {
+fun QuizProgressComponent(
+    total: Int,
+    pagerState: PagerState,
+    dialogState: MutableState<Boolean>,
+    navigateToHome: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -163,7 +178,7 @@ fun QuizProgressComponent(total: Int, pagerState: PagerState, modifier: Modifier
         Spacer(modifier = Modifier.width(8.dp))
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { dialogState.value = true },
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = R.color.white_transparent)
@@ -176,6 +191,12 @@ fun QuizProgressComponent(total: Int, pagerState: PagerState, modifier: Modifier
                     .border(width = 2.dp, color = Color.White)
             )
         }
+
+        AlertDialogComponent(
+            dialogState = dialogState,
+            navigateToHome = navigateToHome
+        )
+
     }
 }
 
@@ -384,6 +405,7 @@ private fun QuizModeScreenPreview() {
         quizName = "",
         category = "",
         settingsQuiz = SettingsQuiz(),
+        navigateToHome = {},
         navigateToResult = { a, b -> }
     )
     //QuizProgressComponent()

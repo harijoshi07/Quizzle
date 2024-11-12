@@ -125,6 +125,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     settingsQuiz = settingsQuizStart,
                     quizName = quizName,
                     category = category,
+                    navigateToHome = {navController.navigate(Screen.Home.route)},
                     navigateToResult = { correctAnswer, size ->
                         navController.navigate(
                             Screen.QuizResult.route + "/null/$correctAnswer/$size/$quizName/$category"
