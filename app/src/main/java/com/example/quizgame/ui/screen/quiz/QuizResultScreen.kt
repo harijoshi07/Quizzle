@@ -138,15 +138,19 @@ fun BoxResult(
         Column(modifier = Modifier.padding(8.dp)) {
 
             Row {
-                TextResult(title = "CORRECT ANSWER", value = "$correctAnswer QUESTION")
+                TextResult(title = "CORRECT", value = "$correctAnswer")
                 Spacer(modifier = Modifier.weight(1f))
+                TextResult(title = "INCORRECT", value = "${size - correctAnswer}")
+
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
                 TextResult(
-                    title = "COMPLETION",
+                    title = "RESULT",
                     value = "${if (correctAnswer == 0) 0 else (correctAnswer * 100) / size}%"
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            TextResult(title = "INCORRECT ANSWER", value = "${size - correctAnswer} QUESTION")
         }
     }
 }
@@ -158,7 +162,7 @@ fun TextResult(
     modifier: Modifier = Modifier
 ) {
 
-    Column {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
         Text(
             text = title,
