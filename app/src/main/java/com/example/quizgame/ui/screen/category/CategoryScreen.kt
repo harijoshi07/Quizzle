@@ -36,6 +36,7 @@ fun CategoryScreen(navigateToQuiz: (String) -> Unit, modifier: Modifier=Modifier
 
     Surface(
         modifier = modifier
+            .fillMaxSize()
             .padding(top = 20.dp),
         //color = colorResource(id = R.color.white_background),
         shape = RoundedCornerShape(topStartPercent = 8, topEndPercent = 8)

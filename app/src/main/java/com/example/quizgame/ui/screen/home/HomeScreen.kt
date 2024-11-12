@@ -41,7 +41,7 @@ fun HomeScreen(
     navigateToCategory: () -> Unit,
 ) {
     Column(
-       modifier =  Modifier.padding(20.dp)
+       //modifier =  Modifier.padding(20.dp)
     ) {
         Column(Modifier.padding(20.dp)) {
             Spacer(modifier = Modifier.height(16.dp))
@@ -155,7 +155,8 @@ fun PopularList(
 
     Surface(
         color = colorResource(id = R.color.white_background),
-        shape = RoundedCornerShape(topStartPercent = 16, topEndPercent = 16)
+        shape = RoundedCornerShape(topStartPercent = 16, topEndPercent = 16),
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
             Modifier
