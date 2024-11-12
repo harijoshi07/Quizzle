@@ -132,6 +132,26 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     })
             }
 
+            composable(Screen.QuizResult.route + "/{id}/{correctAnswer}/{size}/{quiz}/{quizCategory}") {
+                val correctAnswer = it.arguments?.getString("correctAnswer")?.toInt() ?: 0
+                val size = it.arguments?.getString("size")?.toInt() ?: 0
+                val quiz = it.arguments?.getString("quiz") ?: ""
+                val category = it.arguments?.getString("quizCategory") ?: ""
+                val id = it.arguments?.getString("id")?:"0"
+                QuizResultScreen(
+                    correctAnswer = correctAnswer,
+                    size = size,
+                    quiz = quiz,
+                    navigateToQuiz = {
+                        navController.navigate(Screen.QuizStart.route + "/$category/$quiz")
+                    },
+                    navigateToHome = {
+                        navController.navigate(Screen.Home.route)
+                    },
+                )
+
+            }
+
         }
     }
 
