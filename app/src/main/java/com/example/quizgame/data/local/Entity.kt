@@ -11,5 +11,8 @@ data class HistoryEntity(
     val quiz: String,
     val category: String,
     val correctAnswer: Int,
-    val size: Int
+    val size: Int,
+    val question: String,
+    val userAnswerData: String,
+    val correctAnswerData: String,
 )
