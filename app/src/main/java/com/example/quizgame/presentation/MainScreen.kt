@@ -21,6 +21,7 @@ import com.example.quizgame.ui.component.FloatingButton
 import com.example.quizgame.ui.component.TopBar
 import com.example.quizgame.ui.screen.category.CategoryScreen
 import com.example.quizgame.ui.screen.category.CategorySelectScreen
+import com.example.quizgame.ui.screen.history.HistoryScreen
 import com.example.quizgame.ui.screen.home.HomeScreen
 import com.example.quizgame.ui.screen.profile.ProfileScreen
 import com.example.quizgame.ui.screen.quiz.QuizAnswerResultScreen
@@ -85,6 +86,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
             composable(route = Screen.Profile.route) {
                 ProfileScreen(modifier = Modifier.padding(innerPadding))
+            }
+
+            composable(Screen.History.route) {
+                HistoryScreen(navigateToHistory = { id,correctAnswer, size, quiz, category ->
+                    navController.navigate(
+                        Screen.QuizResult.route + "/$id/$correctAnswer/$size/$quiz/$category"
+                    )
+                })
             }
 
             //quiz Screen

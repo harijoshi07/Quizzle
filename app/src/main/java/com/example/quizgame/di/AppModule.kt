@@ -7,6 +7,7 @@ import com.example.quizgame.data.local.QuizDatabase
 import com.example.quizgame.data.remote.retrofit.ApiConfig
 import com.example.quizgame.data.repository.QuizRepository
 import com.example.quizgame.ui.MainViewModel
+import com.example.quizgame.ui.screen.history.HistoryViewModel
 import com.example.quizgame.ui.screen.quiz.QuizViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
@@ -42,4 +43,5 @@ val repositoryModule = module {
 val viewModelModule = module {
     viewModel { MainViewModel(get()) }
     viewModel { QuizViewModel(get()) }
+    viewModel { HistoryViewModel(get()) }
 }
