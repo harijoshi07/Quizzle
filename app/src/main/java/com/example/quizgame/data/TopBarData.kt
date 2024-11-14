@@ -8,6 +8,7 @@ val titleTopBar = mapOf(
     Screen.QuizStart.route + "/{quizCategory}/{quiz}" to "Quiz Start",
     Screen.QuizQuestion.route to "Quiz Question",
     Screen.QuizResult.route + "/{id}/{correctAnswer}/{size}/{quiz}/{quizCategory}" to "Quiz Result",
+    Screen.QuizAnswerResult.route + "/{id}" to "Quiz Answer Result",
     Screen.SelectQuiz.route + "/{quizCategory}" to "Select Quiz",
     Screen.List.route to "List",
     Screen.Home.route to "Home",

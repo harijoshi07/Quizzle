@@ -23,6 +23,7 @@ import com.example.quizgame.ui.screen.category.CategoryScreen
 import com.example.quizgame.ui.screen.category.CategorySelectScreen
 import com.example.quizgame.ui.screen.home.HomeScreen
 import com.example.quizgame.ui.screen.profile.ProfileScreen
+import com.example.quizgame.ui.screen.quiz.QuizAnswerResultScreen
 import com.example.quizgame.ui.screen.quiz.QuizModeScreen
 import com.example.quizgame.ui.screen.quiz.QuizResultScreen
 import com.example.quizgame.ui.screen.quiz.QuizSelectScreen
@@ -140,6 +141,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 val category = it.arguments?.getString("quizCategory") ?: ""
                 val id = it.arguments?.getString("id")?:"0"
                 QuizResultScreen(
+                    id = if(id == "null") 0 else id.toInt(),
                     correctAnswer = correctAnswer,
                     size = size,
                     quiz = quiz,
@@ -149,8 +151,16 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     navigateToHome = {
                         navController.navigate(Screen.Home.route)
                     },
+                    navigateToAnswer = {
+                        navController.navigate(Screen.QuizAnswerResult.route + "/$it")
+                    }
                 )
 
+            }
+
+            composable(Screen.QuizAnswerResult.route + "/{id}") {
+                val id = it.arguments?.getString("id") ?:"1"
+                QuizAnswerResultScreen(id = id.toInt())
             }
 
         }

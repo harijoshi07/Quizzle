@@ -18,6 +18,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -27,15 +28,66 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.quizgame.R
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun QuizResultScreen(
+    id: Int,
     correctAnswer: Int,
     size: Int,
     quiz: String,
     navigateToQuiz: (String) -> Unit,
     navigateToHome: () -> Unit,
+    navigateToAnswer: (Int) -> Unit,
+    quizViewModel: QuizViewModel = koinViewModel(),
     modifier: Modifier = Modifier
+) {
+    if (id != 0) {
+        QuizResultContent(
+            id,
+            correctAnswer,
+            size,
+            quiz,
+            navigateToQuiz,
+            navigateToHome,
+            navigateToAnswer
+        )
+    } else {
+        quizViewModel.getLatestHistory()
+        quizViewModel.getLatestHistory.collectAsState().value.let {
+            when {
+                it.loading -> {
+                    Text(text = "Loading")
+                }
+                it.data != null -> {
+                    QuizResultContent(
+                        id = it.data.id,
+                        correctAnswer = it.data.correctAnswer,
+                        size = it.data.size,
+                        quiz = it.data.quiz,
+                        navigateToQuiz = navigateToQuiz,
+                        navigateToHome = navigateToHome,
+                        navigateToAnswer = navigateToAnswer
+                    )
+                }
+                it.error != null -> {
+                    Text(text = it.error)
+                }
+            }
+        }
+    }
+
+}
+
+@Composable
+fun QuizResultContent(
+    id: Int,
+    correctAnswer: Int,
+    size: Int,
+    quiz: String,
+    navigateToQuiz: (String) -> Unit,
+    navigateToHome: () -> Unit,
+    navigateToAnswer: (Int) -> Unit
 ) {
 
     Column(
@@ -56,23 +108,41 @@ fun QuizResultScreen(
 
                 BoxResult(correctAnswer, size, quiz, navigateToQuiz)
 
-                Button(
-                    onClick = navigateToHome,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(id = R.color.primary_purple)
-                    ),
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                        .height(50.dp)
-                ) {
+                Column {
+                    Button(
+                        onClick = {
+                            navigateToAnswer(id)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .height(50.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(id = R.color.primary_purple)
+                        ),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text(text = "Show Answer", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                    }
 
-                    Text(
-                        text = "Close",
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Button(
+                        onClick = navigateToHome,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(id = R.color.primary_purple)
+                        ),
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                            .height(50.dp)
+                    ) {
+
+                        Text(
+                            text = "Close",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
         }
@@ -185,7 +255,7 @@ fun TextResult(
 @Composable
 private fun QuizResultScreenPreview() {
 
-    QuizResultScreen(correctAnswer = 1, size = 5, quiz = "Geography", {}, {})
+    //QuizResultScreen(correctAnswer = 1, size = 5, quiz = "Geography", {}, {})
     //BoxResult()
     //TextResult(title = "title", value = "value")
 

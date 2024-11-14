@@ -56,9 +56,11 @@ import androidx.core.text.HtmlCompat
 import com.example.quizgame.R
 import com.example.quizgame.data.SettingsQuiz
 import com.example.quizgame.data.iconCategory
+import com.example.quizgame.data.local.HistoryEntity
 import com.example.quizgame.data.remote.response.ResultsItem
 import com.example.quizgame.ui.component.AlertDialogComponent
 import com.example.quizgame.utils.countMatchingElements
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -214,6 +216,7 @@ fun QuizQuestionComponent(
 
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val gson = Gson()
 
     //This code prepares answer choices for a single question in a quiz by combining incorrect
     // and correct answers, then placing the correct answer at a random position within the list.
@@ -379,6 +382,18 @@ fun QuizQuestionComponent(
 
                             val countMatch = countMatchingElements(correctAnswer, answer)
                             val answerSize = answer.size
+                            val data = HistoryEntity(
+                                id = 0,
+                                quiz = quizName,
+                                category = category,
+                                correctAnswer = countMatch,
+                                size = answerSize,
+                                question = gson.toJson(quiz),
+                                correctAnswerData = gson.toJson(correctAnswer),
+                                userAnswerData = gson.toJson(answer)
+                            )
+
+                            quizViewModel.insertHistory(data)
                             navigateToResult(countMatch, answerSize)
                         }
                     },
