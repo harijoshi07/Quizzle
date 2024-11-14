@@ -1,7 +1,9 @@
 package com.example.quizgame.di
 
+import androidx.room.Room
 import com.example.quizgame.data.SettingPreferences
 import com.example.quizgame.data.dataStore
+import com.example.quizgame.data.local.QuizDatabase
 import com.example.quizgame.data.remote.retrofit.ApiConfig
 import com.example.quizgame.data.repository.QuizRepository
 import com.example.quizgame.ui.MainViewModel
@@ -15,6 +17,15 @@ val appModule = module {
         val settingPreferences = SettingPreferences(androidContext().dataStore)
         settingPreferences
     }
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            QuizDatabase::class.java, "quiz.db"
+        ).fallbackToDestructiveMigration()
+            .allowMainThreadQueries()
+            .build()
+    }
+    single { get<QuizDatabase>().quizDao() }
 }
 
 val networkModule = module {
@@ -25,7 +36,7 @@ val networkModule = module {
 }
 
 val repositoryModule = module {
-    single { QuizRepository(get()) }
+    single { QuizRepository(get(), get()) }
 }
 
 val viewModelModule = module {
