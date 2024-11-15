@@ -33,3 +33,6 @@ This project was built using the following technologies and tools:
 | Quiz Result Screen                      | Quiz Answer Screen                      | Quiz History Screen                 |
 |-----------------------------------------|-----------------------------------------|-------------------------------------|
 | ![](screenshots/quiz_result_screen.png) | ![](screenshots/quiz_answer_screen.png) | ![](screenshots/history_screen.png) |
+
+## Disclaimer
+All credits go to the original creator: [MuhammadRadifa/QuizKit](https://github.com/MuhammadRadifa/QuizKit).
