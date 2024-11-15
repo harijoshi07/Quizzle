@@ -97,7 +97,7 @@ fun TopProfileBar() {
                     color = Color(0xFFFFD6DD)
                 )
                 Text(
-                    text = "John Doe",
+                    text = "David Warner",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color.White
