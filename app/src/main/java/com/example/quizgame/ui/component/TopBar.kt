@@ -63,13 +63,15 @@ fun GeneralTopBar(title: String, navigateBack: () -> Unit, modifier: Modifier = 
             )
         },
         navigationIcon = {
-            IconButton(onClick = navigateBack) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = null,
-                    tint = colorPaint,
-                    modifier = Modifier.size(40.dp)
-                )
+            if (!title.startsWith("QuizResult")){
+                IconButton(onClick = navigateBack) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = null,
+                        tint = colorPaint,
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
